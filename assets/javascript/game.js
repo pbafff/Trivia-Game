@@ -1,5 +1,7 @@
 var url = "https://opentdb.com/api.php";
-
+var ticker;
+var iterator = 0;
+var timer_is_on = 0;
 $("#modal-btn").on("click", function () {
     console.log("clicked");
     url += "?" + $.param({
@@ -19,8 +21,6 @@ $("#modal-btn").on("click", function () {
             $(".modal").css({ "display": "none", "z-index": "1" });
             $("#game-div").css({ "z-index": "2", "visibility": "visible" });
         }, 1500);
-
-        var iterator = 0;
         function questionGenerator() {
             $("#question").html(response.results[iterator].question);
             console.log(response.results[iterator].correct_answer);
@@ -62,20 +62,23 @@ $("#modal-btn").on("click", function () {
             })
 
         };
-
-        var ticker;
         function timer(t) {
-            
+
             questionGenerator();
             ticker = setTimeout(() => {
-                
+                iterator++;
                 questionGenerator();
+                timer(20000);
             }, t);
         };
-        
         timer(20000);
 
+
+
+
+
     });
+
 
 });
 
