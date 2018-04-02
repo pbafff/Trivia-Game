@@ -1,7 +1,10 @@
 var url = "https://opentdb.com/api.php";
 var ticker;
+var tickerTwo;
 var iterator = 0;
-var timer_is_on = 0;
+var correct;
+var wrong;
+
 $("#modal-btn").on("click", function () {
     console.log("clicked");
     url += "?" + $.param({
@@ -28,7 +31,7 @@ $("#modal-btn").on("click", function () {
             var ansArr = [];
             var randomizedArr = [];
             ansArr.push(response.results[iterator].incorrect_answers[0], response.results[iterator].incorrect_answers[1], response.results[iterator].incorrect_answers[2], response.results[iterator].correct_answer);
-            
+
             while (ansArr.length > 0) {
                 var randIndex = Math.floor(Math.random() * ansArr.length);
                 var removed = ansArr.splice(randIndex, 1);
@@ -45,6 +48,7 @@ $("#modal-btn").on("click", function () {
             console.log('clicked again');
             if ($(this).html() == response.results[iterator].correct_answer) {
                 $("#display").html('correct!');
+                clearTimeout(tickerTwo);
                 clearTimeout(ticker);
                 iterator++;
                 setTimeout(() => {
@@ -55,6 +59,7 @@ $("#modal-btn").on("click", function () {
 
             } else {
                 $("#display").html('wrong!');
+                clearTimeout(tickerTwo);
                 clearTimeout(ticker);
                 iterator++;
                 setTimeout(() => {
@@ -67,11 +72,15 @@ $("#modal-btn").on("click", function () {
 
         function timer(t) {
             questionGenerator();
+            tickerTwo = setTimeout(() => {
+                $("#display").html('took too long!');
+            }, t);
             ticker = setTimeout(() => {
+                $("#display").empty();
                 iterator++;
                 questionGenerator();
                 timer(20000);
-            }, t);
+            }, t + 2000);
         };
         timer(20000);
         // questionGenerator();
