@@ -28,6 +28,7 @@ $("#modal-btn").on("click", function () {
             var ansArr = [];
             var randomizedArr = [];
             ansArr.push(response.results[iterator].incorrect_answers[0], response.results[iterator].incorrect_answers[1], response.results[iterator].incorrect_answers[2], response.results[iterator].correct_answer);
+            
             while (ansArr.length > 0) {
                 var randIndex = Math.floor(Math.random() * ansArr.length);
                 var removed = ansArr.splice(randIndex, 1);
@@ -38,44 +39,42 @@ $("#modal-btn").on("click", function () {
             $("#answer2").html(randomizedArr[1]);
             $("#answer3").html(randomizedArr[2]);
             $("#answer4").html(randomizedArr[3]);
-
-            
-
         };
+
         $(".answers").on('click', function () {
             console.log('clicked again');
             if ($(this).html() == response.results[iterator].correct_answer) {
                 $("#display").html('correct!');
-                // clearTimeout(ticker);
+                clearTimeout(ticker);
                 iterator++;
                 setTimeout(() => {
-                    // timer(20000);
+                    timer(20000);
                     $("#display").empty();
-                    questionGenerator();
+                    // questionGenerator();
                 }, 1200);
 
             } else {
                 $("#display").html('wrong!');
-                // clearTimeout(ticker);
+                clearTimeout(ticker);
                 iterator++;
                 setTimeout(() => {
-                    // timer(20000);
+                    timer(20000);
                     $("#display").empty();
-                    questionGenerator();
+                    // questionGenerator();
                 }, 1200);
             }
         })
-        // function timer(t) {
 
-        //     questionGenerator();
-        //     ticker = setTimeout(() => {
-        //         iterator++;
-        //         questionGenerator();
-        //         timer(20000);
-        //     }, t);
-        // };
-        // timer(20000);
-        questionGenerator();
+        function timer(t) {
+            questionGenerator();
+            ticker = setTimeout(() => {
+                iterator++;
+                questionGenerator();
+                timer(20000);
+            }, t);
+        };
+        timer(20000);
+        // questionGenerator();
 
 
 
