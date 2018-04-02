@@ -22,11 +22,12 @@ $("#modal-btn").on("click", function () {
 
         var iterator = 0;
         function questionGenerator() {
-            $("#question").html(response.results[0].question);
-
+            $("#question").html(response.results[iterator].question);
+            console.log(response.results[iterator].correct_answer);
+            console.log(iterator);
             var ansArr = [];
             var randomizedArr = [];
-            ansArr.push(response.results[0].incorrect_answers[0], response.results[0].incorrect_answers[1], response.results[0].incorrect_answers[2], response.results[0].correct_answer);
+            ansArr.push(response.results[iterator].incorrect_answers[0], response.results[iterator].incorrect_answers[1], response.results[iterator].incorrect_answers[2], response.results[iterator].correct_answer);
             while (ansArr.length > 0) {
                 var randIndex = Math.floor(Math.random() * ansArr.length);
                 var removed = ansArr.splice(randIndex, 1);
@@ -40,17 +41,39 @@ $("#modal-btn").on("click", function () {
 
             $(".answers").on('click', function () {
                 console.log('clicked again');
-                if ($(this).html() == response.results[0].correct_answer) {
-                    console.log('right!');
+                if ($(this).html() == response.results[iterator].correct_answer) {
+                    $("#display").html('correct!');
+                    clearTimeout(ticker);
+                    iterator++;
+                    setTimeout(() => {
+                        timer(20000);
+                        $("#display").empty();
+                    }, 1200);
 
                 } else {
-                    console.log('wrong!');
+                    $("#display").html('wrong!');
+                    clearTimeout(ticker);
+                    iterator++;
+                    setTimeout(() => {
+                        timer(20000);
+                        $("#display").empty();
+                    }, 1200);
                 }
             })
 
-        }
-        questionGenerator();
+        };
+
+        var ticker;
+        function timer(t) {
+            
+            questionGenerator();
+            ticker = setTimeout(() => {
+                
+                questionGenerator();
+            }, t);
+        };
         
+        timer(20000);
 
     });
 
