@@ -60,7 +60,7 @@ $("#modal-btn").on("click", function () {
                         clickBool = true;
                         timer(20000);
                         $("#display").empty();
-                        // questionGenerator();
+                        
                     }, 1200);
 
                 } else {
@@ -78,7 +78,7 @@ $("#modal-btn").on("click", function () {
                         clickBool = true;
                         timer(20000);
                         $("#display").empty();
-                        // questionGenerator();
+                        
                     }, 1200);
                 }
             }
@@ -96,14 +96,13 @@ $("#modal-btn").on("click", function () {
             ticker = setTimeout(() => {
                 $("#display").empty();
                 $("p:contains('" + response.results[iterator - 1].correct_answer + "')").css('background-color', 'transparent');
-                
                 questionGenerator();
                 timer(20000);
                 clickBool = true;
             }, t + 2000);
         };
         timer(20000);
-        // questionGenerator();
+        
 
 
 
