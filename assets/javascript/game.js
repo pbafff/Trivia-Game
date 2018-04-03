@@ -5,6 +5,7 @@ var iterator = 0;
 var correct = 0;
 var wrong = 0;
 var clickBool = true;
+var questionTimer;
 $("#modal-btn").on("click", function () {
     console.log("clicked");
     url += "?" + $.param({
@@ -51,6 +52,7 @@ $("#modal-btn").on("click", function () {
                     $("#display").html('correct!');
                     clearTimeout(tickerTwo);
                     clearTimeout(ticker);
+                    clearTimeout(questionTimer);
                     correct++;
                     iterator++;
                     clickBool = false;
@@ -60,13 +62,14 @@ $("#modal-btn").on("click", function () {
                         clickBool = true;
                         timer(20000);
                         $("#display").empty();
-                        
+
                     }, 1200);
 
                 } else {
                     $("#display").html('wrong!');
                     clearTimeout(tickerTwo);
                     clearTimeout(ticker);
+                    clearTimeout(questionTimer);
                     wrong++;
                     iterator++;
                     clickBool = false;
@@ -78,7 +81,7 @@ $("#modal-btn").on("click", function () {
                         clickBool = true;
                         timer(20000);
                         $("#display").empty();
-                        
+
                     }, 1200);
                 }
             }
@@ -86,12 +89,14 @@ $("#modal-btn").on("click", function () {
 
         function timer(t) {
             questionGenerator();
+            countdown((t / 1000));
             tickerTwo = setTimeout(() => {
                 $("#display").html('took too long!');
                 iterator++;
                 $("p:contains('" + response.results[iterator - 1].correct_answer + "')").css('background-color', 'green');
                 clickBool = false;
                 wrong++;
+                clearInterval(questionTimer);
             }, t);
             ticker = setTimeout(() => {
                 $("#display").empty();
@@ -99,12 +104,26 @@ $("#modal-btn").on("click", function () {
                 questionGenerator();
                 timer(20000);
                 clickBool = true;
+                countdown((t / 1000) + 1);
             }, t + 2000);
         };
         timer(20000);
-        
 
+        function countdown(s) {
+            var timeleft = s;
+            questionTimer = setInterval(function () {
+                timeleft--;
+                // document.getElementById("time").textContent = timeleft;
+                $("#time").text(timeleft);
+                if (timeleft <= 0) {
+                    clearInterval(questionTimer);
+                }
+            }, 1000);
+        }
 
+        function endPage() {
+
+        }
 
 
 
