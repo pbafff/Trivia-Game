@@ -2,9 +2,9 @@ var url = "https://opentdb.com/api.php";
 var ticker;
 var tickerTwo;
 var iterator = 0;
-var correct;
-var wrong;
-
+var correct = 0;
+var wrong = 0;
+var clickBool = true;
 $("#modal-btn").on("click", function () {
     console.log("clicked");
     url += "?" + $.param({
@@ -45,28 +45,42 @@ $("#modal-btn").on("click", function () {
         };
 
         $(".answers").on('click', function () {
-            console.log('clicked again');
-            if ($(this).html() == response.results[iterator].correct_answer) {
-                $("#display").html('correct!');
-                clearTimeout(tickerTwo);
-                clearTimeout(ticker);
-                iterator++;
-                setTimeout(() => {
-                    timer(20000);
-                    $("#display").empty();
-                    // questionGenerator();
-                }, 1200);
+            if (clickBool) {
+                console.log('clicked again');
+                if ($(this).html() == response.results[iterator].correct_answer) {
+                    $("#display").html('correct!');
+                    clearTimeout(tickerTwo);
+                    clearTimeout(ticker);
+                    correct++;
+                    iterator++;
+                    clickBool = false;
+                    $(this).css('background-color', 'green');
+                    setTimeout(() => {
+                        $(this).css('background-color', 'transparent');
+                        clickBool = true;
+                        timer(20000);
+                        $("#display").empty();
+                        // questionGenerator();
+                    }, 1200);
 
-            } else {
-                $("#display").html('wrong!');
-                clearTimeout(tickerTwo);
-                clearTimeout(ticker);
-                iterator++;
-                setTimeout(() => {
-                    timer(20000);
-                    $("#display").empty();
-                    // questionGenerator();
-                }, 1200);
+                } else {
+                    $("#display").html('wrong!');
+                    clearTimeout(tickerTwo);
+                    clearTimeout(ticker);
+                    wrong++;
+                    iterator++;
+                    clickBool = false;
+                    $(this).css('background-color', 'red');
+                    $("p:contains('" + response.results[iterator - 1].correct_answer + "')").css('background-color', 'green');
+                    setTimeout(() => {
+                        $(this).css('background-color', 'transparent');
+                        $("p:contains('" + response.results[iterator - 1].correct_answer + "')").css('background-color', 'transparent');
+                        clickBool = true;
+                        timer(20000);
+                        $("#display").empty();
+                        // questionGenerator();
+                    }, 1200);
+                }
             }
         })
 
@@ -74,12 +88,18 @@ $("#modal-btn").on("click", function () {
             questionGenerator();
             tickerTwo = setTimeout(() => {
                 $("#display").html('took too long!');
+                iterator++;
+                $("p:contains('" + response.results[iterator - 1].correct_answer + "')").css('background-color', 'green');
+                clickBool = false;
+                wrong++;
             }, t);
             ticker = setTimeout(() => {
                 $("#display").empty();
-                iterator++;
+                $("p:contains('" + response.results[iterator - 1].correct_answer + "')").css('background-color', 'transparent');
+                
                 questionGenerator();
                 timer(20000);
+                clickBool = true;
             }, t + 2000);
         };
         timer(20000);
