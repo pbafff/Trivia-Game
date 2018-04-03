@@ -22,8 +22,8 @@ $("#modal-btn").on("click", function () {
     }).done(function (response) {
         console.log(response);
         setTimeout(() => {
-            $(".modal").css({ "display": "none", "z-index": "1" });
-            $("#game-div").css({ "z-index": "2", "visibility": "visible" });
+            $(".modal").toggle();
+            $("#game-div").toggle();
         }, 1500);
         function questionGenerator() {
             $("#question").html(response.results[iterator].question);
@@ -128,8 +128,18 @@ $("#modal-btn").on("click", function () {
             if (iterator == response.results.length) {
                 $("#right").text(correct);
                 $("#wrong").text(wrong);
-                $("#game-div").css('display', 'none');
-                $("#end").css('visibility', 'visible');
+                $("#game-div").toggle();
+                $("#end").toggle();
+                $("#restart").on('click', function () {
+                    setTimeout(() => {
+                        $(".modal").toggle();
+                        $("#end").toggle();
+                        var iterator = 0;
+                        var correct = 0;
+                        var wrong = 0;
+                        var clickBool = true; 
+                    }, 1000);
+                })
             }
         }
 

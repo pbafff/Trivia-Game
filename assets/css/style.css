@@ -57,7 +57,7 @@ main {
 }
 
 #game-div {
-    visibility: hidden;
+    display: none;
     grid-column: 2 / 12;
     grid-row: 2 / 12;
     
@@ -68,6 +68,8 @@ main {
 }
 
 #end {
-    visibility: hidden;
+    display: none;
     z-index: 3;
+    grid-column: 2 / 12;
+    grid-row: 2 / 12;
 }
