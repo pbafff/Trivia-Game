@@ -126,20 +126,23 @@ $("#modal-btn").on("click", function () {
 
         function endPage() {
             if (iterator == response.results.length) {
-                $("#right").text(correct);
-                $("#wrong").text(wrong);
-                $("#game-div").toggle();
-                $("#end").toggle();
-                $("#restart").on('click', function () {
-                    setTimeout(() => {
-                        $(".modal").toggle();
-                        $("#end").toggle();
-                        var iterator = 0;
-                        var correct = 0;
-                        var wrong = 0;
-                        var clickBool = true; 
-                    }, 1000);
-                })
+                setTimeout(() => {
+                    $("#right").text(correct);
+                    $("#wrong").text(wrong);
+                    $("#game-div").toggle();
+                    $("#end").toggle();
+                    $("#restart").on('click', function () {
+                        setTimeout(() => {
+                            $(".modal").toggle();
+                            $("#end").toggle();
+                            var iterator = 0;
+                            var correct = 0;
+                            var wrong = 0;
+                            var clickBool = true;
+                        }, 1000);
+                    })
+                }, 1000);
+
             }
         }
 
