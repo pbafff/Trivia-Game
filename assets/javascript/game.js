@@ -55,6 +55,7 @@ $("#modal-btn").on("click", function () {
                     clearTimeout(questionTimer);
                     correct++;
                     iterator++;
+                    endPage();
                     clickBool = false;
                     $(this).css('background-color', 'green');
                     setTimeout(() => {
@@ -72,6 +73,7 @@ $("#modal-btn").on("click", function () {
                     clearTimeout(questionTimer);
                     wrong++;
                     iterator++;
+                    endPage();
                     clickBool = false;
                     $(this).css('background-color', 'red');
                     $("p:contains('" + response.results[iterator - 1].correct_answer + "')").css('background-color', 'green');
@@ -94,6 +96,7 @@ $("#modal-btn").on("click", function () {
                 $("#display").html('took too long!');
                 iterator++;
                 $("p:contains('" + response.results[iterator - 1].correct_answer + "')").css('background-color', 'green');
+                endPage();
                 clickBool = false;
                 wrong++;
                 clearInterval(questionTimer);
@@ -122,7 +125,12 @@ $("#modal-btn").on("click", function () {
         }
 
         function endPage() {
-
+            if (iterator == response.results.length) {
+                $("#right").text(correct);
+                $("#wrong").text(wrong);
+                $("#game-div").css('display', 'none');
+                $("#end").css('visibility', 'visible');
+            }
         }
 
 
